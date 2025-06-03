@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/4487bad28c.js"
+      crossorigin="anonymous"></script>
+    <title>Whatsapp</title>
+  </head>
+  <body class="h-screen flex justify-center items-center">
+    
+    <div class="w-[95%] h-[95%] shadow-2xl bg-gray-100 rounded-xl flex relative">
+      <!-- Sidebar -->
+      <aside class="w-[8%] flex items-center justify-center bg-[#f0f0e8] text-white flex-col gap-2">
+        <button id="btn-messages" class="hover:bg-[#d9caa3] w-20 h-20 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl bg-[#d9caa3]">
+          <i class="fas fa-envelope text-black text-3xl mb-1"></i>
+          <span class="text-black text-xs">Messages</span>
+        </button>
+        <button id="bouton-groupe-affich" class="hover:bg-[#d9caa3] w-20 h-20 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl">
+          <i class="fas fa-users text-black text-3xl mb-1"></i>
+          <span class="text-black text-xs">Groupes</span>
+        </button>
+        <button id="button-diffusion" class="hover:bg-[#d9caa3] w-20 h-20 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl">
+          <i class="fa-solid fa-share-nodes text-black text-3xl mb-1"></i>
+          <span class="text-black text-xs">Diffusions</span>
+        </button>
+        <button id="btn-archives" class="hover:bg-[#d9caa3] w-20 h-20 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl">
+          <i class="fas fa-archive text-black text-3xl mb-1"></i>
+          <span class="text-black text-xs">Archives</span>
+        </button>
+        <button id="bouton-nouveau" class="hover:bg-[#d9caa3] w-20 h-20 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl">
+          <i class="fas fa-plus text-black text-3xl mb-1"></i>
+          <span class="text-black text-xs">Nouveau</span>
+        </button>
+
+        <!-- Profil utilisateur et déconnexion -->
+        <div class="mt-auto mb-4 flex flex-col items-center">
+          <div id="user-profile" class="w-20 h-20 flex flex-col items-center justify-center">
+            <div class="w-12 h-12 bg-[#d9caa3] rounded-full flex items-center justify-center mb-1">
+              <span id="user-initials" class="text-black font-semibold"></span>
+            </div>
+            <span id="user-name" class="text-black text-xs text-center"></span>
+          </div>
+          <button id="btn-logout" class="hover:bg-[#d9caa3] w-20 h-12 flex flex-col items-center justify-center border border-[#d9caa3] rounded-xl mt-2">
+            <i class="fas fa-sign-out-alt text-black text-xl"></i>
+            <span class="text-black text-xs">Déconnexion</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- section Contacts / Groupes -->
+      <section class="w-[32%] bg-[#f8f7f5] relative">
+        <div class="header-search flex flex-col gap-2 justify-center items-center">
+          <h1 class="text-[#4c4b49] w-[95%] ml-2 border-b border-gray-300 flex justify-between py-2">
+            <span id="section-title">Discussions</span>
+            <div class="flex gap-2">
+              <button id="btn-diffusion-action" class="hidden">
+                <i class="fa-solid text-green-600 font-bold text-2xl fa-paper-plane" title="Envoyer diffusion"></i>
+              </button>
+              <button id="bouton-groupe">
+                <i class="fa-solid text-black font-bold text-3xl fa-group-arrows-rotate"></i>
+              </button>
+            </div>
+          </h1>
+          <input type="text" id="text-search" placeholder="Recherche" class="px-4 py-2 ml-2 mr-2 rounded-full w-[98%] outline-none border border-gray-300" />
+        </div>
+
+        <!-- Modal Nouveau Contact -->
+        <div id="modal" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+          <div id="modalContent" class="bg-[#f0f0e8] p-6 rounded-xl w-[90%] max-w-md shadow-lg scale-75 opacity-0 transition-all duration-300">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Nouveau Contact</h2>
+            <form id="contactForm" class="space-y-4">
+              <input type="text" placeholder="Nom" class="input-nom w-full px-4 py-2 border-b border-gray-400 bg-transparent focus:outline-none text-black" />
+              <input type="text" placeholder="Prénom" class="input-prenom w-full px-4 py-2 border-b border-gray-400 bg-transparent focus:outline-none text-black" />
+              <input type="tel" placeholder="Téléphone" class="input-numero w-full px-4 py-2 border-b border-gray-400 bg-transparent focus:outline-none text-black" />
+              <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" id="closeModal" class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white transition">Annuler</button>
+                <button type="submit" class="bg-[#d9caa3] px-4 py-2 rounded hover:bg-[#cbb98f] text-black transition">Valider</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal Nouveau Groupe -->
+        <div id="modal-groupe" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+          <div id="modalContent-groupe" class="bg-[#f0f0e8] p-6 rounded-xl w-[90%] scale-90 opacity-100 transition-all duration-300">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Nouveau Groupe</h2>
+            <form id="groupForm" class="space-y-4">
+              <input type="text" placeholder="Nom du groupe" class="input-nom-groupe w-full px-4 py-2 border-b border-gray-400 bg-transparent focus:outline-none text-black" />
+              <textarea placeholder="Description du groupe (optionnel)" rows="3" class="input-description w-full px-4 py-2 border-b border-gray-400 bg-transparent focus:outline-none text-black resize-none"></textarea>
+              
+              <!-- Section membres -->
+              <div class="space-y-2">
+                <label class="text-sm text-gray-600">Sélectionner les membres (minimum 2):</label>
+                <div id="membres-selection" class="max-h-32 overflow-y-auto space-y-2">
+                  <!-- Les contacts seront injectés ici -->
+                </div>
+              </div>
+              
+              <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" id="closeModal-groupe" class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white transition">Annuler</button>
+                <button type="submit" class="bg-[#d9caa3] px-4 py-2 rounded hover:bg-[#cbb98f] text-black transition">Créer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal Gestion Groupe -->
+        <div id="modal-gestion-groupe" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+          <div class="bg-[#f0f0e8] p-6 rounded-xl w-[90%] max-w-md shadow-lg">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Gestion du Groupe</h2>
+            <div class="space-y-3">
+              <button id="btn-ajouter-membre" class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                <i class="fas fa-user-plus mr-2"></i>Ajouter un membre
+              </button>
+              <button id="btn-supprimer-membre" class="w-full bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                <i class="fas fa-user-minus mr-2"></i>Supprimer un membre
+              </button>
+              <button id="btn-archiver-groupe" class="w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                <i class="fas fa-archive mr-2"></i>Archiver le groupe
+              </button>
+              <button id="btn-supprimer-groupe" class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <i class="fas fa-trash mr-2"></i>Supprimer le groupe
+              </button>
+            </div>
+            <div class="flex justify-end mt-4">
+              <button id="close-gestion-groupe" class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white">Fermer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Diffusion -->
+        <div id="modal-diffusion" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+          <div class="bg-[#f0f0e8] p-6 rounded-xl w-[90%] max-w-md shadow-lg">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Envoyer Diffusion</h2>
+            <div class="space-y-4">
+              <textarea id="message-diffusion" placeholder="Votre message de diffusion..." rows="4" class="w-full px-4 py-2 border border-gray-400 rounded bg-transparent focus:outline-none text-black resize-none"></textarea>
+              <div class="text-sm text-gray-600">
+                Destinataires sélectionnés: <span id="nb-destinataires">0</span>
+              </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+              <button id="cancel-diffusion" class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white">Annuler</button>
+              <button id="send-diffusion" class="bg-[#3dce40] px-4 py-2 rounded hover:bg-[#35b839] text-white">Envoyer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Ajout/Suppression Membre -->
+        <div id="modal-gestion-membres" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+          <div class="bg-[#f0f0e8] p-6 rounded-xl w-[90%] max-w-md shadow-lg">
+            <h2 id="titre-gestion-membres" class="text-xl font-semibold mb-4 text-gray-700">Gérer les membres</h2>
+            <div id="liste-gestion-membres" class="max-h-64 overflow-y-auto space-y-2 mb-4">
+              <!-- Liste dynamique -->
+            </div>
+            <div class="flex justify-end">
+              <button id="close-gestion-membres" class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white">Fermer</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-section" class="mt-4 h-[calc(100%-120px)] overflow-y-auto px-4 flex flex-col gap-3">
+        </div>
+      </section>
+
+      <!-- Discussions -->
+      <main id="partie-contact-groupe" class="w-[65%] bg-[#efe8d8] flex flex-col relative">
+        <div class="header-discussions h-[70px] w-[100%] flex items-center justify-between px-3 border-b border-white">
+          <div class="flex items-center gap-3">
+            <div id="contact-avatar" class="w-12 h-12 bg-[#d9caa3] rounded-full flex items-center justify-center">
+              <span id="contact-initials" class="text-black font-semibold text-lg">--</span>
+            </div>
+            <div>
+              <h3 id="contact-name" class="font-semibold text-gray-800">Sélectionnez un contact</h3>
+              <p id="contact-status" class="text-sm text-gray-600">--</p>
+              <div id="membres-groupe" class="flex flex-wrap gap-1 mt-1 max-w-md"></div>
+            </div>
+          </div>
+          <div class="button-discussion flex gap-2">
+            <!-- Boutons pour contacts -->
+            <div id="contact-actions" class="flex gap-2 hidden">
+              <button id="btn-supprimer-contact" class="w-10 h-10 flex items-center justify-center border-2 border-yellow-700 rounded-full hover:bg-gray-300" title="Supprimer contact">
+                <i class="fa-solid fa-user-minus text-orange-700"></i>
+              </button>
+              <button id="btn-bloquer-contact" class="w-10 h-10 flex items-center justify-center border-2 border-red-500 rounded-full hover:bg-gray-300" title="Bloquer contact">
+                <i class="fas fa-ban text-red-500"></i>
+              </button>
+            </div>
+            
+            <!-- Boutons pour groupes -->
+            <div id="group-actions" class="flex gap-2 hidden">
+              <button id="btn-gerer-groupe" class="w-10 h-10 flex items-center justify-center border-2 border-blue-500 rounded-full hover:bg-gray-300" title="Gérer groupe">
+                <i class="fas fa-cog text-blue-500"></i>
+              </button>
+            </div>
+            
+            <!-- Boutons communs -->
+            <button id="btn-archiver-conversation" class="w-10 h-10 flex items-center justify-center border-2 border-gray-500 rounded-full hover:bg-gray-300" title="Archiver">
+              <i class="fas fa-archive text-gray-500"></i>
+            </button>
+            <button id="btn-supprimer-discussion" class="w-10 h-10 flex items-center justify-center border-red-500 border-2 rounded-full hover:bg-gray-800" title="Supprimer discussion">
+              <i class="fa-solid fa-trash text-red-500"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div id="content-discussions" class="flex-1 p-4 overflow-y-auto">
+          <div class="content-discussions flex items-center justify-center h-full text-gray-500">
+            <div class="text-center">
+              <i class="fas fa-comment-dots text-6xl mb-4 opacity-50"></i>
+              <p class="text-lg">Sélectionnez une conversation pour commencer</p>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="footer-discussions h-[80px] bg-[#f8f7f5] flex items-center justify-around px-4">
+          <input type="text" id="input-message" placeholder="Tapez votre message..." class="flex-1 bg-[#f1eff0] py-4 px-4 rounded-2xl outline-none mr-3" />
+          <button id="btn-send-message" class="w-[50px] h-[50px] flex items-center justify-center bg-[#3dce40] border-2 rounded-full hover:bg-[#35b839] transition">
+            <i class="fa-solid fa-arrow-right text-white"></i>
+          </button>
+        </div>
+      </main>
+    </div>
+
+
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+
